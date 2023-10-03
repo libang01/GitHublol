@@ -1,0 +1,111 @@
+# Data Structures
+- 2D array gameBoard
+- Linked list for snakeSegments (to represent the snake's body)
+- Integer for score
+
+#function placeSnakeInitialPosition(gameBoard):
+placeSnakeInitialPosition(gameBoard)`
+    boardWidth = gameBoard.width
+    boardHeight = gameBoard.height
+    
+    centerX = boardWidth / 2
+    centerY = boardHeight / 2
+    
+    initialX = centerX
+    initialY = centerY
+
+    if initialX < 0 or initialX >= boardWidth or initialY < 0 or initialY >= boardHeight:
+    gameBoard.placeSnakeHead(initialX, initialY)
+    return gameBoard
+
+# Function to initialize the game
+function initializeGame():
+    create gameBoard
+    placeSnakeInitialPosition(gameBoard)
+    placeEggRandomly(gameBoard)
+	snake_length = 1
+    snake_direction = RIGHT
+    game_over = false
+    score = 0
+    game_over = false
+    while (game_over =! true)
+        handleInput()
+        moveSnake(snake_direction)
+        if snakeCollidesWithEgg():
+            eatEgg()
+            snake_length += 1
+        if snakeHitsObject():
+            hitObject()
+            snake_length -= 1
+        if snakeHitsWall() or snakeHitsItself():
+            game_over = true
+        updateDisplay()
+        waitForFrameRateDelay()
+    end while
+    endGame()
+    initializeSnakeDirection()
+    score = 0
+	
+# Function to handle the snake eating an egg
+function eatEgg():
+    # Increment the score by a certain amount (10 points)
+    incrementScore(10)
+    
+    # Increase the length of the snake
+    increaseSnakeLength()
+    
+    # Place a new egg randomly on the game board
+    placeEggRandomly(gameBoard)
+	
+# Function to calculate the score
+function calculateScore():
+    score += 10
+	
+# Function to display the score
+function displayScore():
+    renderScore(score)
+	
+
+# Function to handle user input
+function handleUserInput():
+userInput = getUserInput()
+    if userInput == UP_ARROW:
+        snakeDirection = UP
+    elif userInput == DOWN_ARROW:
+        snakeDirection = DOWN
+    elif userInput == LEFT_ARROW:
+        snakeDirection = LEFT
+    elif userInput == RIGHT_ARROW:
+        snakeDirection = RIGHT
+    changeSnakeDirection(userInput)
+
+# Function to move the snake
+function moveSnake(userInput):
+    updateSnakePosition()
+    if checkCollisionWithWallOrObstacle() or checkCollisionWithItself():
+        endGame()
+    else:
+        if snakeHeadEatsEgg():
+            increaseScore()
+            generateNewEggPosition()
+            extendSnakeLength()
+        updateGameBoard()
+
+# Function to display the game board
+function displayGameBoard():
+    renderGameBoard()
+
+# Main game loop
+initializeGame()
+while gameIsPlaying():
+    handleUserInput()
+    moveSnake()
+    displayGameBoard()
+	displayScore(calculateScore)
+    delayForGameSpeed()
+
+displayGameOverMessage()
+displayFinalScore(score)
+if playAgain():
+    resetGame()
+    return toMainGameLoop()
